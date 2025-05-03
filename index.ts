@@ -9,11 +9,15 @@ export interface CSSAttribute extends CSSProperties {
 }
 
 export interface CSSContext {
-  p?: any; // props
-  g?: 1; // global flag
-  k?: 1; // keyframes flag
-  o?: any; // options
-  target?: Element; // target element
+  id?: string;
+  p?: Record<string, any>; // props used for dynamic styles
+  g?: 1; // global flag (numeric literal used in bind)
+  k?: 1; // keyframes flag (numeric literal used in bind)
+  o?: {
+    pretty?: boolean; // for formatting output
+    format?: (hashValue: string) => string; // custom formatter for className generation (replaces default 'go' prefix)
+  }; // options
+  target?: Element | HTMLStyleElement; // target element for style injection
 }
 
 export type CSSInterpolation =
@@ -36,7 +40,7 @@ export type CSSValue = CSSAttribute | TemplateStringsArray | string | Function;
  * @returns {string} - A generated className
  */
 function css(
-  this: CSSContext,
+  this: CSSContext | void,
   styleValue: CSSValue,
   ...interpolations: CSSInterpolation[]
 ): string {
@@ -66,8 +70,8 @@ function css(
           )
       : processedStyle, // Object or string
 
-    // Get the stylesheet target
-    getSheet(context.target),
+    // Get the stylesheet target, passing the custom ID if provided
+    getSheet(context.target, context.id),
 
     // Pass remaining flags and options - convert number flags to boolean
     !!context.g, // Global flag

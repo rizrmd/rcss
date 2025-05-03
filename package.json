@@ -1,6 +1,8 @@
 {
   "name": "rcss",
-  "module": "src/index.ts",
+  "module": "./index.ts",
+  "main": "./index.ts", 
+  "types": "./index.d.ts",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest"

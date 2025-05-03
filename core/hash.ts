@@ -51,10 +51,15 @@ export const hash = (
   // Get a string representation of the compiledStyles
   const stringifiedStyles = stringifyObject(compiledStyles);
 
+  // Get the format function from options if available
+  const formatFn = options?.format ? 
+    (hashValue: number) => options.format(hashValue.toString(), "") : 
+    undefined;
+
   // Retrieve the className from cache or hash it in place
   const className =
     styleCache[stringifiedStyles] ||
-    (styleCache[stringifiedStyles] = toHash(stringifiedStyles));
+    (styleCache[stringifiedStyles] = toHash(stringifiedStyles, formatFn));
 
   // If there's no entry for the current className
   if (!styleCache[className]) {

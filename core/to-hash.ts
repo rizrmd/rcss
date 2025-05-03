@@ -5,9 +5,13 @@
  * The intermediate and final results are truncated into 32-bit
  * unsigned integers.
  * @param {String} inputString - The string to hash
- * @returns {String} - The generated className with 'go' prefix
+ * @param {Function} [formatFn] - Optional function to format the hash value
+ * @returns {String} - The generated className
  */
-export const toHash = (inputString: string): string => {
+export const toHash = (
+  inputString: string, 
+  formatFn?: (hashValue: number) => string
+): string => {
   let index = 0;
   let hashValue = 11; // Initial prime value
   
@@ -17,6 +21,6 @@ export const toHash = (inputString: string): string => {
     hashValue = (101 * hashValue + inputString.charCodeAt(index++)) >>> 0;
   }
   
-  // Return className with 'go' prefix
-  return 'go' + hashValue;
+  // Use the format function if provided, otherwise use default 'go' prefix
+  return formatFn ? formatFn(hashValue) : 'go' + hashValue;
 };
