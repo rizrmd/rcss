@@ -6,11 +6,6 @@ interface CSSObject {
 }
 
 /**
- * Optional prefixer function type
- */
-type PrefixerFunction = (property: string, value: any) => string;
-
-/**
  * Parses an object into CSS string, creating properly scoped blocks
  * @param {Object} styleObject - The object to parse into CSS
  * @param {String} selector - The CSS selector to scope styles to
